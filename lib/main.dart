@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/routes/app_router.dart';
 import 'package:todo_app/core/utils/colors.dart';
 import 'package:todo_app/features/home/presentation/views/home_view.dart';
+import 'package:todo_app/features/splash/presentation/views/splash_view.dart';
 
 void main() {
   runApp(const TodoApp());
@@ -12,11 +14,14 @@ class TodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        AppRouter.homeScreen : (context) => HomeView()
+      },
       theme: ThemeData.light().copyWith(
         scaffoldBackgroundColor: AppColors.blueBg
       ),
       debugShowCheckedModeBanner: false,
-      home: HomeView(),
+      home: SplashView(),
     );
   }
 }
