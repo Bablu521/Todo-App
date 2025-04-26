@@ -8,8 +8,8 @@ class SplashViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 250,
-        height: 250,
+        width: 220,
+        height: 220,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/to-do-list.png"),
