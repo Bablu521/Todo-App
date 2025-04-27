@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app/core/di/sevice_locator.dart';
+import 'package:todo_app/core/networking/database.dart';
 import 'package:todo_app/core/utils/colors.dart';
 import 'package:todo_app/core/utils/styles.dart';
+import 'package:todo_app/features/home/data/model/task_model.dart';
+import 'package:todo_app/features/home/logic/cubit/all_tasks_cubit.dart';
 
 class TaskItemController extends StatelessWidget {
-  const TaskItemController({super.key});
+  final TaskModel task;
+  const TaskItemController({super.key, required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +32,24 @@ class TaskItemController extends StatelessWidget {
           ),
           SizedBox(width: 10),
           Expanded(
-            child: Container(
-              alignment: Alignment.center,
-              width: 90,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.deleteColor, width: 1),
-              ),
-              child: Text(
-                "Delete",
-                style: AppStyles.style18.copyWith(color: AppColors.deleteColor),
+            child: InkWell(
+              onTap: () async {
+                await getIt.get<AppDatabase>().deleteFromDatabase(id: task.id);
+                context.read<AllTasksCubit>().getAllTasks();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: 90,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.deleteColor, width: 1),
+                ),
+                child: Text(
+                  "Delete",
+                  style: AppStyles.style18.copyWith(
+                    color: AppColors.deleteColor,
+                  ),
+                ),
               ),
             ),
           ),

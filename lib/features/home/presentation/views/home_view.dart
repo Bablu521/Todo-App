@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/core/di/sevice_locator.dart';
 import 'package:todo_app/core/networking/database.dart';
 import 'package:todo_app/core/utils/colors.dart';
 import 'package:todo_app/core/utils/styles.dart';
+import 'package:todo_app/features/home/data/repo/home_repo_impl.dart';
+import 'package:todo_app/features/home/logic/cubit/all_tasks_cubit.dart';
 import 'package:todo_app/features/home/presentation/views/components/custom_text_form_field.dart';
 import 'package:todo_app/features/home/presentation/views/components/home_view_body.dart';
 
@@ -20,11 +23,11 @@ class _HomeViewState extends State<HomeView> {
   String title = '';
   String date = '';
   String time = '';
-  
+
   @override
   void initState() {
     super.initState();
-    getIt.get<AppDatabase>().createDatabase();
+    // getIt.get<AppDatabase>().createDatabase();
   }
 
   @override
@@ -41,10 +44,16 @@ class _HomeViewState extends State<HomeView> {
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.task), label: "Tasks"),
-            BottomNavigationBarItem(icon: Icon(Icons.done), label: "Done"),
             BottomNavigationBarItem(
-              icon: Icon(Icons.archive),
+              icon: Icon(Icons.assignment_outlined),
+              label: "Tasks",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.assignment_turned_in_outlined),
+              label: "Done",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.archive_outlined),
               label: "Archive",
             ),
           ],
@@ -54,7 +63,7 @@ class _HomeViewState extends State<HomeView> {
             showModalBottomSheet(
               context: context,
               backgroundColor: Colors.transparent,
-              builder: (_) {
+              builder: (modalContext) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Container(
@@ -102,22 +111,23 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           SizedBox(height: 10),
                           InkWell(
-                            onTap: () {
+                            onTap: () async {
                               title = titleController.text;
                               date = dateController.text;
                               time = timeController.text;
                               // print("$title , $date , $time");
-                              getIt.get<AppDatabase>().insertIntoDatabase(
+                              await getIt.get<AppDatabase>().insertIntoDatabase(
                                 title: title,
                                 date: date,
                                 time: time,
                               );
-                              getIt.get<AppDatabase>().getData();
+                              await getIt.get<AppDatabase>().getData();
                               titleController.clear();
                               dateController.clear();
                               timeController.clear();
 
                               Navigator.maybePop(context);
+                              context.read<AllTasksCubit>().getAllTasks();
                             },
                             child: Container(
                               alignment: Alignment.center,
@@ -149,13 +159,6 @@ class _HomeViewState extends State<HomeView> {
         ),
         body: HomeViewBody(),
       ),
-    );
-  }
-
-  OutlineInputBorder outlineInputBorder() {
-    return OutlineInputBorder(
-      borderSide: BorderSide(width: 2, color: Color.fromARGB(122, 37, 78, 86)),
-      borderRadius: BorderRadius.circular(8),
     );
   }
 }

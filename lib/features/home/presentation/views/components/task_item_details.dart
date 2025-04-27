@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/core/utils/colors.dart';
 import 'package:todo_app/core/utils/styles.dart';
+import 'package:todo_app/features/home/data/model/task_model.dart';
 
 class TaskItemDetails extends StatelessWidget {
-  const TaskItemDetails({super.key});
+  final TaskModel task;
+  const TaskItemDetails({super.key , required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class TaskItemDetails extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Buy groceries",
+                  task.title ?? "Title",
                   style: AppStyles.style22,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
@@ -27,7 +29,7 @@ class TaskItemDetails extends StatelessWidget {
                 IntrinsicHeight(
                   child: Row(
                     children: [
-                      Text("25/4/2025", style: AppStyles.style14),
+                      Text(task.date ?? "Date", style: AppStyles.style14),
                       VerticalDivider(
                         thickness: 1.4,
                         width: 15,
@@ -35,7 +37,7 @@ class TaskItemDetails extends StatelessWidget {
                         indent: 4, // Shortens from the top
                         endIndent: 4,
                       ),
-                      Text("6:00 PM", style: AppStyles.style14),
+                      Text(task.time ?? "Time", style: AppStyles.style14),
                     ],
                   ),
                 ),
@@ -54,7 +56,7 @@ class TaskItemDetails extends StatelessWidget {
                 ),
                 padding: EdgeInsets.all(5),
                 child: Text(
-                  "Incomplete",
+                  task.status,
                   style: AppStyles.style14.copyWith(
                     color: Color.fromARGB(186, 47, 62, 63),
                   ),

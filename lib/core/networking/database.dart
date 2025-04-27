@@ -24,18 +24,25 @@ class AppDatabase {
     required String date,
     required String time,
   }) {
-    database!
-        .rawInsert(
-          "INSERT INTO tasks (title , date , time , status) Values ('$title' , '$date' , '$time' , 'Pending')",
-        )
-        .then((id) {
-          // print("${id} inserted Successfully");
-        });
+    database!.rawInsert(
+      "INSERT INTO tasks (title , date , time , status) Values ('$title' , '$date' , '$time' , 'Pending')",
+    );
+    // .then((id) {
+    //   print("${id} inserted Successfully");
+    // });
   }
 
-  getData() {
-    database!.rawQuery("SELECT * FROM tasks").then((tasks) {
+  // Future<List<Map<String, dynamic>>> getData() async {
+  //   return await database!.rawQuery("SELECT * FROM tasks");
+  // }
+  Future<List<Map<String, dynamic>>> getData() {
+    return database!.rawQuery("SELECT * FROM tasks").then((tasks) {
       return tasks;
     });
+  }
+
+  deleteFromDatabase({required int id}) async {
+    return await database!.rawDelete("DELETE FROM tasks WHERE id = ?",
+        [id]);
   }
 }

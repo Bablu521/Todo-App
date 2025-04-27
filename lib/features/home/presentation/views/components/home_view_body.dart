@@ -13,11 +13,17 @@ class HomeViewBody extends StatelessWidget {
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.only(top: 20,bottom: 10),
-              child: Text("My Tasks", style: AppStyles.style30),
+              padding: EdgeInsets.only(top: 20, bottom: 10),
+              child: Row(
+                children: [
+                  Icon(Icons.app_registration_outlined, size: 32 ,color: Colors.black,),
+                  SizedBox(width: 2),
+                  Text("Tasks", style: AppStyles.style30),
+                ],
+              ),
             ),
           ),
-          TasksListView()
+          TasksListView(),
         ],
       ),
     );
