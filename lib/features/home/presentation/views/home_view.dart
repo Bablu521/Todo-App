@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/di/sevice_locator.dart';
+import 'package:todo_app/core/networking/database.dart';
 import 'package:todo_app/core/utils/colors.dart';
 import 'package:todo_app/core/utils/styles.dart';
 import 'package:todo_app/features/home/presentation/views/components/custom_text_form_field.dart';
@@ -18,6 +20,21 @@ class _HomeViewState extends State<HomeView> {
   String title = '';
   String date = '';
   String time = '';
+  
+  @override
+  void initState() {
+    super.initState();
+    getIt.get<AppDatabase>().createDatabase();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    titleController.dispose();
+    dateController.dispose();
+    timeController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -89,8 +106,13 @@ class _HomeViewState extends State<HomeView> {
                               title = titleController.text;
                               date = dateController.text;
                               time = timeController.text;
-                              print("$title , $date , $time");
-
+                              // print("$title , $date , $time");
+                              getIt.get<AppDatabase>().insertIntoDatabase(
+                                title: title,
+                                date: date,
+                                time: time,
+                              );
+                              getIt.get<AppDatabase>().getData();
                               titleController.clear();
                               dateController.clear();
                               timeController.clear();
