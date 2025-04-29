@@ -6,8 +6,11 @@ import 'package:todo_app/core/utils/colors.dart';
 import 'package:todo_app/core/utils/styles.dart';
 import 'package:todo_app/features/home/data/model/task_model.dart';
 import 'package:todo_app/features/home/logic/cubit/all_tasks_cubit.dart';
+import 'package:todo_app/features/home/logic/cubit/all_tasks_state.dart';
 import 'package:todo_app/features/home/presentation/views/components/custom_text_form_field.dart';
-import 'package:todo_app/features/home/presentation/views/components/home_view_body.dart';
+import 'package:todo_app/features/home/presentation/views/components/view_archived_tasks.dart';
+import 'package:todo_app/features/home/presentation/views/components/view_done_tasks.dart';
+import 'package:todo_app/features/home/presentation/views/components/view_tasks.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -18,7 +21,6 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int currentIndex = 0;
-  List<Widget> views = [View1(), View2(), View3()];
   final TextEditingController titleController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
@@ -74,7 +76,7 @@ class _HomeViewState extends State<HomeView> {
         title: titleController.text,
         date: dateController.text,
         time: timeController.text,
-        status: "todo",
+        status: "Todo",
       );
       await getIt.get<DatabaseHelpher>().insertIntoDatabase(task: newTask);
 
@@ -88,8 +90,8 @@ class _HomeViewState extends State<HomeView> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please fill in all the task details.'),
-          backgroundColor: Colors.grey, 
-          duration: Duration(seconds: 2), 
+          backgroundColor: Colors.grey,
+          duration: Duration(seconds: 2),
         ),
       );
     }
@@ -213,35 +215,25 @@ class _HomeViewState extends State<HomeView> {
           shape: StadiumBorder(),
           child: Icon(Icons.edit, color: Color.fromARGB(255, 23, 107, 122)),
         ),
-        body: views[currentIndex],
+        body: BlocBuilder<AllTasksCubit, AllTasksState>(
+          builder: (context, state) {
+            if (state is AllTasksSuccess) {
+              List<Widget> views = [
+                ViewTasks(tasks: state.tasks),
+                ViewDoneTasks(tasks: state.tasks),
+                ViewArchivedTasks(tasks: state.tasks),
+              ];
+              return views[currentIndex];
+            } else if (state is AllTasksFailure) {
+              return Center(
+                child: Text("An Error Occured : ${state.errorMsg}"),
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
     );
-  }
-}
-
-class View1 extends StatelessWidget {
-  const View1({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return HomeViewBody();
-  }
-}
-
-class View2 extends StatelessWidget {
-  const View2({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
-  }
-}
-
-class View3 extends StatelessWidget {
-  const View3({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
   }
 }
