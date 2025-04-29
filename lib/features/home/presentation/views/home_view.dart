@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/core/di/sevice_locator.dart';
 import 'package:todo_app/core/networking/database.dart';
 import 'package:todo_app/core/utils/colors.dart';
+import 'package:todo_app/core/helpers/pick_date_helper.dart';
 import 'package:todo_app/core/utils/styles.dart';
 import 'package:todo_app/features/home/data/model/task_model.dart';
 import 'package:todo_app/features/home/logic/cubit/all_tasks_cubit.dart';
@@ -42,30 +43,6 @@ class _HomeViewState extends State<HomeView> {
     titleController.dispose();
     dateController.dispose();
     timeController.dispose();
-  }
-
-  Future<void> pickDate() async {
-    DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2050),
-    );
-    if (pickedDate != null) {
-      dateController.text =
-          "${pickedDate.day.toString().padLeft(2, "0")}-${pickedDate.month.toString().padLeft(2, "0")}-${pickedDate.year}";
-    }
-  }
-
-  Future<void> pickTime() async {
-    TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (pickedTime != null) {
-      timeController.text =
-          "${pickedTime.hour.toString().padLeft(2, "0")}:${pickedTime.minute.toString().padLeft(2, "0")}";
-    }
   }
 
   addTask() async {
@@ -170,7 +147,7 @@ class _HomeViewState extends State<HomeView> {
                               labelText: "Date",
                               prefixIcon: Icon(Icons.calendar_month_outlined),
                               readOnly: true,
-                              onTap: pickDate,
+                              onTap: () => pickDate(context: context , dateController: dateController),
                             ),
                           ),
                           SizedBox(height: 10),
@@ -181,7 +158,7 @@ class _HomeViewState extends State<HomeView> {
                               labelText: "Time",
                               prefixIcon: Icon(Icons.access_time_outlined),
                               readOnly: true,
-                              onTap: pickTime,
+                              onTap: () => pickDate(context: context, dateController: dateController),
                             ),
                           ),
                           SizedBox(height: 10),
