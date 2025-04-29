@@ -20,14 +20,28 @@ class TaskItemController extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Expanded(
-            child: Container(
-              alignment: Alignment.center,
-              width: 90,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.updateColor, width: 1),
+            child: InkWell(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (_) {
+                    return Container(
+                      width: 300,
+                      height: 300,
+                      color: Colors.amber,
+                    );
+                  },
+                );
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: 90,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.updateColor, width: 1),
+                ),
+                child: Text("Update", style: AppStyles.style18),
               ),
-              child: Text("Update", style: AppStyles.style18),
             ),
           ),
           SizedBox(width: 10),

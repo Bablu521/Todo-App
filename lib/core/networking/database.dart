@@ -50,7 +50,16 @@ class DatabaseHelpher {
     return await database!.query("tasks");
   }
 
-  deleteFromDatabase({required int id}) async {
-    return await database!.rawDelete("DELETE FROM tasks WHERE id = ?", [id]);
+  Future<void> deleteFromDatabase({required int id}) async {
+    await database!.rawDelete("DELETE FROM tasks WHERE id = ?", [id]);
+  }
+
+  Future<void> updateDatabase({required TaskModel task}) async {
+    await database!.update(
+      "tasks",
+      task.toMap(),
+      where: "id = ?",
+      whereArgs: [task.id],
+    );
   }
 }
