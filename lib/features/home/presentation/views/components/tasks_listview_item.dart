@@ -11,19 +11,23 @@ class TasksListViewItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10),
-      child: Container(
-        padding: EdgeInsets.all(15),
-        height: 135,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: Colors.white,
-        ),
-        child: Column(
-          children: [
-            TaskItemDetails(task:task),
-            SizedBox(height: 10),
-            TaskItemController(task:task),
-          ],
+      child: Material(
+        elevation: 5,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: EdgeInsets.all(15),
+          height: 135,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Colors.white,
+          ),
+          child: Column(
+            children: [
+              TaskItemDetails(task:task),
+              SizedBox(height: 10),
+              TaskItemController(task:task),
+            ],
+          ),
         ),
       ),
     );

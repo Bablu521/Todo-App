@@ -5,8 +5,8 @@ import 'package:todo_app/features/home/data/repo/home_repo_impl.dart';
 final getIt = GetIt.instance;
 
 void setupSeviceLocator() {
-  getIt.registerSingleton<AppDatabase>(AppDatabase());
+  getIt.registerSingleton<DatabaseHelpher>(DatabaseHelpher());
   getIt.registerSingleton<HomeRepoImpl>(
-    HomeRepoImpl(database: getIt.get<AppDatabase>()),
+    HomeRepoImpl(database: getIt.get<DatabaseHelpher>()),
   );
 }

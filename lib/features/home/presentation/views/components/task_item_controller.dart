@@ -34,7 +34,7 @@ class TaskItemController extends StatelessWidget {
           Expanded(
             child: InkWell(
               onTap: () async {
-                await getIt.get<AppDatabase>().deleteFromDatabase(id: task.id);
+                await getIt.get<DatabaseHelpher>().deleteFromDatabase(id: task.id!);
                 context.read<AllTasksCubit>().getAllTasks();
               },
               child: Container(

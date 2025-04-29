@@ -20,7 +20,7 @@ class TaskItemDetails extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  task.title ?? "Title",
+                  task.title,
                   style: AppStyles.style22,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
@@ -29,7 +29,7 @@ class TaskItemDetails extends StatelessWidget {
                 IntrinsicHeight(
                   child: Row(
                     children: [
-                      Text(task.date ?? "Date", style: AppStyles.style14),
+                      Text(task.date, style: AppStyles.style14),
                       VerticalDivider(
                         thickness: 1.4,
                         width: 15,
@@ -37,7 +37,7 @@ class TaskItemDetails extends StatelessWidget {
                         indent: 4, // Shortens from the top
                         endIndent: 4,
                       ),
-                      Text(task.time ?? "Time", style: AppStyles.style14),
+                      Text(task.time, style: AppStyles.style14),
                     ],
                   ),
                 ),

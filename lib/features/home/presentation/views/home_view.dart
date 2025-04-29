@@ -4,7 +4,7 @@ import 'package:todo_app/core/di/sevice_locator.dart';
 import 'package:todo_app/core/networking/database.dart';
 import 'package:todo_app/core/utils/colors.dart';
 import 'package:todo_app/core/utils/styles.dart';
-import 'package:todo_app/features/home/data/repo/home_repo_impl.dart';
+import 'package:todo_app/features/home/data/model/task_model.dart';
 import 'package:todo_app/features/home/logic/cubit/all_tasks_cubit.dart';
 import 'package:todo_app/features/home/presentation/views/components/custom_text_form_field.dart';
 import 'package:todo_app/features/home/presentation/views/components/home_view_body.dart';
@@ -17,6 +17,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  int currentIndex = 0;
+  List<Widget> views = [View1(), View2(), View3()];
   final TextEditingController titleController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
@@ -27,7 +29,9 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    // getIt.get<AppDatabase>().createDatabase();
+    getIt.get<DatabaseHelpher>().createDatabase().then((_) {
+      context.read<AllTasksCubit>().getAllTasks();
+    });
   }
 
   @override
@@ -38,11 +42,72 @@ class _HomeViewState extends State<HomeView> {
     timeController.dispose();
   }
 
+  Future<void> pickDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2050),
+    );
+    if (pickedDate != null) {
+      dateController.text =
+          "${pickedDate.day.toString().padLeft(2, "0")}-${pickedDate.month.toString().padLeft(2, "0")}-${pickedDate.year}";
+    }
+  }
+
+  Future<void> pickTime() async {
+    TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (pickedTime != null) {
+      timeController.text =
+          "${pickedTime.hour.toString().padLeft(2, "0")}:${pickedTime.minute.toString().padLeft(2, "0")}";
+    }
+  }
+
+  addTask() async {
+    if (titleController.text.isNotEmpty &&
+        dateController.text.isNotEmpty &&
+        timeController.text.isNotEmpty) {
+      TaskModel newTask = TaskModel(
+        title: titleController.text,
+        date: dateController.text,
+        time: timeController.text,
+        status: "todo",
+      );
+      await getIt.get<DatabaseHelpher>().insertIntoDatabase(task: newTask);
+
+      titleController.clear();
+      dateController.clear();
+      timeController.clear();
+
+      context.read<AllTasksCubit>().getAllTasks();
+      Navigator.maybePop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please fill in all the task details.'),
+          backgroundColor: Colors.grey, 
+          duration: Duration(seconds: 2), 
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
+          currentIndex: currentIndex,
+          selectedItemColor: AppColors.btnColor,
+          unselectedItemColor: Colors.grey,
+          onTap: (int newIndex) {
+            setState(() {
+              currentIndex = newIndex;
+            });
+          },
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.assignment_outlined),
@@ -91,6 +156,8 @@ class _HomeViewState extends State<HomeView> {
                             child: CustomTextFormField(
                               controller: titleController,
                               labelText: "Title",
+                              prefixIcon: Icon(Icons.title),
+                              readOnly: false,
                             ),
                           ),
                           SizedBox(height: 10),
@@ -99,6 +166,9 @@ class _HomeViewState extends State<HomeView> {
                             child: CustomTextFormField(
                               controller: dateController,
                               labelText: "Date",
+                              prefixIcon: Icon(Icons.calendar_month_outlined),
+                              readOnly: true,
+                              onTap: pickDate,
                             ),
                           ),
                           SizedBox(height: 10),
@@ -107,28 +177,14 @@ class _HomeViewState extends State<HomeView> {
                             child: CustomTextFormField(
                               controller: timeController,
                               labelText: "Time",
+                              prefixIcon: Icon(Icons.access_time_outlined),
+                              readOnly: true,
+                              onTap: pickTime,
                             ),
                           ),
                           SizedBox(height: 10),
                           InkWell(
-                            onTap: () async {
-                              title = titleController.text;
-                              date = dateController.text;
-                              time = timeController.text;
-                              // print("$title , $date , $time");
-                              await getIt.get<AppDatabase>().insertIntoDatabase(
-                                title: title,
-                                date: date,
-                                time: time,
-                              );
-                              await getIt.get<AppDatabase>().getData();
-                              titleController.clear();
-                              dateController.clear();
-                              timeController.clear();
-
-                              Navigator.maybePop(context);
-                              context.read<AllTasksCubit>().getAllTasks();
-                            },
+                            onTap: addTask,
                             child: Container(
                               alignment: Alignment.center,
                               width: double.infinity,
@@ -157,8 +213,35 @@ class _HomeViewState extends State<HomeView> {
           shape: StadiumBorder(),
           child: Icon(Icons.edit, color: Color.fromARGB(255, 23, 107, 122)),
         ),
-        body: HomeViewBody(),
+        body: views[currentIndex],
       ),
     );
+  }
+}
+
+class View1 extends StatelessWidget {
+  const View1({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return HomeViewBody();
+  }
+}
+
+class View2 extends StatelessWidget {
+  const View2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
+  }
+}
+
+class View3 extends StatelessWidget {
+  const View3({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
   }
 }

@@ -4,18 +4,27 @@ import 'package:todo_app/core/utils/styles.dart';
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
-  const CustomTextFormField({super.key, required this.controller , required this.labelText});
+  final Icon prefixIcon;
+  final bool readOnly;
+  final VoidCallback? onTap;
+  const CustomTextFormField({
+    super.key,
+    required this.controller,
+    required this.labelText,
+    required this.prefixIcon,
+    required this.readOnly,
+    this.onTap
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      keyboardType: TextInputType.text,
+      readOnly: readOnly,
+      onTap: onTap,
       decoration: InputDecoration(
-        label: Text(
-          labelText,
-          style: AppStyles.style14.copyWith(fontSize: 16),
-        ),
+        prefixIcon: prefixIcon,
+        label: Text(labelText, style: AppStyles.style14.copyWith(fontSize: 16)),
         filled: true,
         fillColor: Colors.white,
         enabledBorder: outlineInputBorder(),
