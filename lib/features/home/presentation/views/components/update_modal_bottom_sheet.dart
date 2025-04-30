@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/core/di/sevice_locator.dart';
 import 'package:todo_app/core/helpers/pick_date_helper.dart';
+import 'package:todo_app/core/helpers/pick_time_helper.dart';
 import 'package:todo_app/core/networking/database.dart';
 import 'package:todo_app/core/utils/colors.dart';
 import 'package:todo_app/core/utils/styles.dart';
@@ -101,9 +102,9 @@ class _UpdateModalBottomSheetState extends State<UpdateModalBottomSheet> {
                     prefixIcon: Icon(Icons.access_time_outlined),
                     readOnly: true,
                     onTap:
-                        () => pickDate(
+                        () => pickTime(
                           context: context,
-                          dateController: dateController,
+                          timeController: timeController,
                         ),
                   ),
                 ),

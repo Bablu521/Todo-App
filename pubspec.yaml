@@ -39,6 +39,13 @@ dependencies:
   dartz: ^0.10.1
   flutter_bloc: ^9.1.0
   path: ^1.9.1
+  flutter_launcher_icons: ^0.14.3
+  rename: ^3.0.2
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/checklist.png"
 
 dev_dependencies:
   flutter_test:
