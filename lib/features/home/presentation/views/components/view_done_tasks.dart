@@ -9,7 +9,7 @@ class ViewDoneTasks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final doneTasks = tasks.where((task) => task.status == "complete").toList();
+    final doneTasks = tasks.where((task) => task.status == "Complete").toList();
     if (doneTasks.isEmpty) {
       return NoTasksItem(taskType: "Completed Tasks");
     }

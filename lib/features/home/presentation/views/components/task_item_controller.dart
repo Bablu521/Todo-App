@@ -6,6 +6,7 @@ import 'package:todo_app/core/utils/colors.dart';
 import 'package:todo_app/core/utils/styles.dart';
 import 'package:todo_app/features/home/data/model/task_model.dart';
 import 'package:todo_app/features/home/logic/cubit/all_tasks_cubit.dart';
+import 'package:todo_app/features/home/presentation/views/components/update_modal_bottom_sheet.dart';
 
 class TaskItemController extends StatelessWidget {
   final TaskModel task;
@@ -24,12 +25,10 @@ class TaskItemController extends StatelessWidget {
               onTap: () {
                 showModalBottomSheet(
                   context: context,
+                  backgroundColor: Colors.transparent,
+                  isScrollControlled: true,
                   builder: (_) {
-                    return Container(
-                      width: 300,
-                      height: 300,
-                      color: Colors.amber,
-                    );
+                    return UpdateModalBottomSheet(task: task);
                   },
                 );
               },

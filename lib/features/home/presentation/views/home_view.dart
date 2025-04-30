@@ -53,7 +53,7 @@ class _HomeViewState extends State<HomeView> {
         title: titleController.text,
         date: dateController.text,
         time: timeController.text,
-        status: "Todo",
+        status: "To-Do",
       );
       await getIt.get<DatabaseHelpher>().insertIntoDatabase(task: newTask);
 
@@ -107,7 +107,7 @@ class _HomeViewState extends State<HomeView> {
             showModalBottomSheet(
               context: context,
               backgroundColor: Colors.transparent,
-              builder: (modalContext) {
+              builder: (_) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Container(

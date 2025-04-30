@@ -9,9 +9,15 @@ class ViewTasks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (tasks.isEmpty) {
+    final activeTasks =
+        tasks
+            .where(
+              (task) => task.status == "To-Do" || task.status == "In Progress",
+            )
+            .toList();
+    if (activeTasks.isEmpty) {
       return NoTasksItem(taskType: "Tasks");
     }
-    return HomeViewBody(tasks: tasks, taskType: "Tasks");
+    return HomeViewBody(tasks: activeTasks, taskType: "Tasks");
   }
 }

@@ -10,7 +10,7 @@ class ViewArchivedTasks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final archivedTasks =
-        tasks.where((task) => task.status == "incomplete").toList();
+        tasks.where((task) => task.status == "Incomplete").toList();
     if (archivedTasks.isEmpty) {
       return NoTasksItem(taskType: "Archived Tasks");
     }
