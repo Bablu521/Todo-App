@@ -8,9 +8,9 @@ import 'package:todo_app/features/home/data/model/task_model.dart';
 import 'package:todo_app/features/home/logic/cubit/all_tasks_cubit.dart';
 import 'package:todo_app/features/home/presentation/views/components/update_modal_bottom_sheet.dart';
 
-class TaskItemController extends StatelessWidget {
+class TaskItemControllerSection extends StatelessWidget {
   final TaskModel task;
-  const TaskItemController({super.key, required this.task});
+  const TaskItemControllerSection({super.key, required this.task});
 
   @override
   Widget build(BuildContext context) {

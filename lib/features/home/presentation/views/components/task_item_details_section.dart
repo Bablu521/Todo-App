@@ -3,9 +3,9 @@ import 'package:todo_app/core/utils/colors.dart';
 import 'package:todo_app/core/utils/styles.dart';
 import 'package:todo_app/features/home/data/model/task_model.dart';
 
-class TaskItemDetails extends StatelessWidget {
+class TaskItemDetailsSection extends StatelessWidget {
   final TaskModel task;
-  const TaskItemDetails({super.key , required this.task});
+  const TaskItemDetailsSection({super.key , required this.task});
 
   @override
   Widget build(BuildContext context) {
