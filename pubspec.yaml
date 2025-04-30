@@ -45,7 +45,7 @@ dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/checklist.png"
+  image_path: "assets/images/logo.png"
 
 dev_dependencies:
   flutter_test:

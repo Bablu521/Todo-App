@@ -17,7 +17,7 @@ class TasksListViewItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         child: Container(
           padding: EdgeInsets.all(15),
-          height: 180,
+          height: 170,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: Colors.white,
@@ -25,7 +25,7 @@ class TasksListViewItem extends StatelessWidget {
           child: Column(
             children: [
               TaskItemDetailsSection(task: task),
-              SizedBox(height: 10),
+              SizedBox(height: 5),
               TaskItemDescSection(task: task),
               SizedBox(height: 10),
               TaskItemControllerSection(task: task),

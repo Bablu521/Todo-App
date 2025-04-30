@@ -14,7 +14,16 @@ class TaskItemDetailsSection extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            flex: 2,
+            flex: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage("assets/images/logo.png")),
+                shape: BoxShape.circle,
+              ),
+            )),
+            SizedBox(width: 10),
+          Expanded(
+            flex: 3,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,22 +53,19 @@ class TaskItemDetailsSection extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(width: 3),
-          Expanded(
-            flex: 1,
-            child: Align(
-              alignment: Alignment.center,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: AppColors.blueBg,
-                ),
-                padding: EdgeInsets.all(5),
-                child: Text(
-                  task.status,
-                  style: AppStyles.style14.copyWith(
-                    color: Color.fromARGB(186, 47, 62, 63),
-                  ),
+          SizedBox(width: 2),
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: AppColors.blueBg,
+              ),
+              padding: EdgeInsets.all(5),
+              child: Text(
+                task.status,
+                style: AppStyles.style14.copyWith(
+                  color: Color.fromARGB(186, 47, 62, 63),
                 ),
               ),
             ),
