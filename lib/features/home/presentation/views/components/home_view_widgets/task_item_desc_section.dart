@@ -19,7 +19,7 @@ class TaskItemDescSection extends StatelessWidget {
             child: Text(
               task.description,
               style: AppStyles.style14.copyWith(
-                color: Color.fromARGB(186, 47, 62, 63),
+                color: AppColors.greyColor,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -33,7 +33,7 @@ class TaskItemDescSection extends StatelessWidget {
             ),
             child: IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, AppRouter.taskDetailsScreen);
+                Navigator.pushNamed(context, AppRouter.taskDetailsScreen , arguments: task);
               },
               icon: Icon(
                 Icons.arrow_forward_ios_outlined,

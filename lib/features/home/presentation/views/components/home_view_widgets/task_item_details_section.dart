@@ -19,6 +19,7 @@ class TaskItemDetailsSection extends StatelessWidget {
             flex: 1,
             child: Container(
               decoration: BoxDecoration(
+                shape:BoxShape.circle,
                 image:
                     task.imagePath != null
                         ? DecorationImage(
@@ -29,7 +30,6 @@ class TaskItemDetailsSection extends StatelessWidget {
                           image: AssetImage("assets/images/logo.png"),
                           fit: BoxFit.fill,
                         ),
-                shape: BoxShape.circle,
               ),
             ),
           ),
