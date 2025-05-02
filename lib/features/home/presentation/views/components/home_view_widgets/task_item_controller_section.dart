@@ -6,7 +6,7 @@ import 'package:todo_app/core/utils/colors.dart';
 import 'package:todo_app/core/utils/styles.dart';
 import 'package:todo_app/features/home/data/model/task_model.dart';
 import 'package:todo_app/features/home/logic/cubit/all_tasks_cubit.dart';
-import 'package:todo_app/features/home/presentation/views/components/update_modal_bottom_sheet.dart';
+import 'package:todo_app/features/home/presentation/views/components/home_view_widgets/update_modal_bottom_sheet.dart';
 
 class TaskItemControllerSection extends StatelessWidget {
   final TaskModel task;

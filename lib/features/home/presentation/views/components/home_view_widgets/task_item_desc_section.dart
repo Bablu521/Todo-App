@@ -17,7 +17,7 @@ class TaskItemDescSection extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              "Learn how to build apps with Flutter.",
+              task.description,
               style: AppStyles.style14.copyWith(
                 color: Color.fromARGB(186, 47, 62, 63),
               ),
@@ -26,13 +26,20 @@ class TaskItemDescSection extends StatelessWidget {
             ),
           ),
           SizedBox(width: 2),
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, AppRouter.taskDetailsScreen);
-            },
-            icon: Icon(
-              Icons.arrow_forward_ios_outlined,
-              color: AppColors.btnColor,
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.blueBg,
+              shape: BoxShape.circle
+            ),
+            child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, AppRouter.taskDetailsScreen);
+              },
+              icon: Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: AppColors.btnColor,
+                size: 22.2,
+              ),
             ),
           ),
         ],

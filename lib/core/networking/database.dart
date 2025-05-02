@@ -14,7 +14,7 @@ class DatabaseHelpher {
       onCreate: (Database db, int version) {
         // print("Database Created");
         db.execute(
-          "CREATE Table tasks(id INTEGER PRIMARY KEY ,title TEXT,date TEXT,time TEXT,status Text)",
+          "CREATE Table tasks(id INTEGER PRIMARY KEY ,title TEXT,description TEXT,date TEXT,time TEXT,status Text,imagePath Text)",
         );
         // print("Table Created");
       },

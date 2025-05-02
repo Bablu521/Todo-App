@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:todo_app/core/utils/colors.dart';
 import 'package:todo_app/core/utils/styles.dart';
@@ -5,7 +7,7 @@ import 'package:todo_app/features/home/data/model/task_model.dart';
 
 class TaskItemDetailsSection extends StatelessWidget {
   final TaskModel task;
-  const TaskItemDetailsSection({super.key , required this.task});
+  const TaskItemDetailsSection({super.key, required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +19,21 @@ class TaskItemDetailsSection extends StatelessWidget {
             flex: 1,
             child: Container(
               decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage("assets/images/logo.png")),
+                image:
+                    task.imagePath != null
+                        ? DecorationImage(
+                          image: FileImage(File(task.imagePath!)),
+                          fit: BoxFit.fill,
+                        )
+                        : DecorationImage(
+                          image: AssetImage("assets/images/logo.png"),
+                          fit: BoxFit.fill,
+                        ),
                 shape: BoxShape.circle,
               ),
-            )),
-            SizedBox(width: 10),
+            ),
+          ),
+          SizedBox(width: 10),
           Expanded(
             flex: 3,
             child: Column(
@@ -53,7 +65,7 @@ class TaskItemDetailsSection extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(width: 2),
+          SizedBox(width: 10),
           Align(
             alignment: Alignment.center,
             child: Container(

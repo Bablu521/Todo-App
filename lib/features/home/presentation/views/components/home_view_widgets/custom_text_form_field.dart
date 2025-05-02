@@ -7,13 +7,15 @@ class CustomTextFormField extends StatelessWidget {
   final Icon prefixIcon;
   final bool readOnly;
   final VoidCallback? onTap;
+  final int maxLines;
   const CustomTextFormField({
     super.key,
     required this.controller,
     required this.labelText,
     required this.prefixIcon,
     required this.readOnly,
-    this.onTap
+    this.onTap,
+    this.maxLines = 1
   });
 
   @override
@@ -22,6 +24,7 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       readOnly: readOnly,
       onTap: onTap,
+      maxLines: maxLines,
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
         label: Text(labelText, style: AppStyles.style14.copyWith(fontSize: 16)),

@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:todo_app/core/di/sevice_locator.dart';
 import 'package:todo_app/core/helpers/pick_time_helper.dart';
 import 'package:todo_app/core/networking/database.dart';
@@ -9,10 +11,10 @@ import 'package:todo_app/core/utils/styles.dart';
 import 'package:todo_app/features/home/data/model/task_model.dart';
 import 'package:todo_app/features/home/logic/cubit/all_tasks_cubit.dart';
 import 'package:todo_app/features/home/logic/cubit/all_tasks_state.dart';
-import 'package:todo_app/features/home/presentation/views/components/custom_text_form_field.dart';
-import 'package:todo_app/features/home/presentation/views/components/view_archived_tasks.dart';
-import 'package:todo_app/features/home/presentation/views/components/view_done_tasks.dart';
-import 'package:todo_app/features/home/presentation/views/components/view_tasks.dart';
+import 'package:todo_app/features/home/presentation/views/components/home_view_widgets/custom_text_form_field.dart';
+import 'package:todo_app/features/home/presentation/views/components/home_view_widgets/view_archived_tasks.dart';
+import 'package:todo_app/features/home/presentation/views/components/home_view_widgets/view_done_tasks.dart';
+import 'package:todo_app/features/home/presentation/views/components/home_view_widgets/view_tasks.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -24,11 +26,25 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int currentIndex = 0;
   final TextEditingController titleController = TextEditingController();
+  final TextEditingController descController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
-  String title = '';
-  String date = '';
-  String time = '';
+  final String title = '';
+  final String description = '';
+  final String date = '';
+  final String time = '';
+
+  File? imagePath;
+  final ImagePicker imagePicker = ImagePicker();
+
+    Future<void> pickImageFromGallery() async {
+    final returnedImage = await imagePicker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (returnedImage != null) {
+      imagePath = File(returnedImage.path);
+    }
+  }
 
   @override
   void initState() {
@@ -42,25 +58,31 @@ class _HomeViewState extends State<HomeView> {
   void dispose() {
     super.dispose();
     titleController.dispose();
+    descController.dispose();
     dateController.dispose();
     timeController.dispose();
   }
 
-  addTask() async {
+  Future<void> addTask() async {
     if (titleController.text.isNotEmpty &&
+        descController.text.isNotEmpty &&
         dateController.text.isNotEmpty &&
         timeController.text.isNotEmpty) {
       TaskModel newTask = TaskModel(
         title: titleController.text,
+        description: descController.text,
         date: dateController.text,
         time: timeController.text,
         status: "To-Do",
+        imagePath: imagePath?.path,
       );
       await getIt.get<DatabaseHelpher>().insertIntoDatabase(task: newTask);
 
       titleController.clear();
+      descController.clear();
       dateController.clear();
       timeController.clear();
+      imagePath = null;
 
       context.read<AllTasksCubit>().getAllTasks();
       Navigator.maybePop(context);
@@ -110,78 +132,126 @@ class _HomeViewState extends State<HomeView> {
               backgroundColor: Colors.transparent,
               builder: (_) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     alignment: Alignment.center,
                     margin: EdgeInsets.only(bottom: 150),
-                    height: 520,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Add New Task",
-                            style: AppStyles.style22.copyWith(
-                              color: Colors.black,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          SizedBox(
-                            height: 45,
-                            child: CustomTextFormField(
-                              controller: titleController,
-                              labelText: "Title",
-                              prefixIcon: Icon(Icons.title),
-                              readOnly: false,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          SizedBox(
-                            height: 45,
-                            child: CustomTextFormField(
-                              controller: dateController,
-                              labelText: "Date",
-                              prefixIcon: Icon(Icons.calendar_month_outlined),
-                              readOnly: true,
-                              onTap: () => pickDate(context: context , dateController: dateController),
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          SizedBox(
-                            height: 45,
-                            child: CustomTextFormField(
-                              controller: timeController,
-                              labelText: "Time",
-                              prefixIcon: Icon(Icons.access_time_outlined),
-                              readOnly: true,
-                              onTap: () => pickTime(context: context, timeController: timeController),
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          InkWell(
-                            onTap: addTask,
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: double.infinity,
-                              height: 45,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: AppColors.btnColor,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Add New Task",
+                              style: AppStyles.style22.copyWith(
+                                color: Colors.black,
                               ),
-                              child: Text(
-                                "Add Task",
-                                style: AppStyles.style18.copyWith(
-                                  color: Colors.white,
+                            ),
+                            SizedBox(height: 10),
+                            SizedBox(
+                              height: 45,
+                              child: CustomTextFormField(
+                                controller: titleController,
+                                labelText: "Title",
+                                prefixIcon: Icon(Icons.title,color: AppColors.greyColor,),
+                                readOnly: false,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            SizedBox(
+                              height: 80,
+                              child: CustomTextFormField(
+                                controller: descController,
+                                labelText: "Description",
+                                prefixIcon: Icon(Icons.subject_outlined,
+                                  color: AppColors.greyColor,
+                                ),
+                                readOnly: false,
+                                maxLines: 2,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            SizedBox(
+                              height: 45,
+                              child: CustomTextFormField(
+                                controller: dateController,
+                                labelText: "Date",
+                                prefixIcon: Icon(Icons.calendar_month_outlined,
+                                  color: AppColors.greyColor,
+                                ),
+                                readOnly: true,
+                                onTap:
+                                    () => pickDate(
+                                      context: context,
+                                      dateController: dateController,
+                                    ),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            SizedBox(
+                              height: 45,
+                              child: CustomTextFormField(
+                                controller: timeController,
+                                labelText: "Time",
+                                prefixIcon: Icon(Icons.access_time_outlined,
+                                  color: AppColors.greyColor,
+                                ),
+                                readOnly: true,
+                                onTap:
+                                    () => pickTime(
+                                      context: context,
+                                      timeController: timeController,
+                                    ),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  "Upload Image",
+                                  style: AppStyles.style14.copyWith(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.greyColor,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: pickImageFromGallery,
+                                  icon: Icon(
+                                    Icons.add_photo_alternate_outlined,
+                                    size: 32,
+                                    color: AppColors.greyColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            InkWell(
+                              onTap: addTask,
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                height: 45,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: AppColors.btnColor,
+                                ),
+                                child: Text(
+                                  "Add Task",
+                                  style: AppStyles.style18.copyWith(
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

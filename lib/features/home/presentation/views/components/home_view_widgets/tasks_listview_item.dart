@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/features/home/data/model/task_model.dart';
-import 'package:todo_app/features/home/presentation/views/components/task_item_controller_section.dart';
-import 'package:todo_app/features/home/presentation/views/components/task_item_desc_section.dart';
-import 'package:todo_app/features/home/presentation/views/components/task_item_details_section.dart';
+import 'package:todo_app/features/home/presentation/views/components/home_view_widgets/task_item_controller_section.dart';
+import 'package:todo_app/features/home/presentation/views/components/home_view_widgets/task_item_desc_section.dart';
+import 'package:todo_app/features/home/presentation/views/components/home_view_widgets/task_item_details_section.dart';
 
 class TasksListViewItem extends StatelessWidget {
   final TaskModel task;
@@ -17,7 +17,7 @@ class TasksListViewItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         child: Container(
           padding: EdgeInsets.all(15),
-          height: 170,
+          height: 175,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: Colors.white,

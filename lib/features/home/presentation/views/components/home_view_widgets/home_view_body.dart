@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/core/utils/styles.dart';
 import 'package:todo_app/features/home/data/model/task_model.dart';
-import 'package:todo_app/features/home/presentation/views/components/tasks_listview.dart';
+import 'package:todo_app/features/home/presentation/views/components/home_view_widgets/tasks_listview.dart';
+
 
 class HomeViewBody extends StatelessWidget {
   final List<TaskModel> tasks;
