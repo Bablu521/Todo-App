@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:todo_app/core/utils/colors.dart';
 import 'package:todo_app/core/utils/styles.dart';
 import 'package:todo_app/features/home/data/model/task_model.dart';
 
@@ -71,7 +69,14 @@ class TaskItemDetailsSection extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: AppColors.blueBg,
+                color:
+                    task.status == "To-Do"
+                        ? Colors.grey[200]
+                        : task.status == "In Progress"
+                        ? Colors.yellow[100]
+                        : task.status == "Complete"
+                        ? Colors.green[100]
+                        : Colors.red[100],
               ),
               padding: EdgeInsets.all(5),
               child: Text(
